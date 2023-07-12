@@ -101,6 +101,19 @@ var vm = new Vue({
                 d['xiuxi'] = false
             }
         })
+    },
+    continueLoad() {
+        var lastday = this.table[this.table.length - 1];
+        // 获取今天日期对象
+        var today = new Date(lastday.dateStr);
+        var dateStrings = [];
+        for (var i = 1; i <= 30; i++) {
+            var date = new Date(today);
+            date.setDate(today.getDate() + i);
+            var dateString = this.getDateString(date);
+            dateStrings.push(dateString);
+        }
+        this.generateTable(dateStrings)
     }
   }
 })
