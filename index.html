@@ -12,7 +12,6 @@
             margin: 0;
             color: #555555;
             background-color: rgb(243, 243, 243);
-            padding: 4px;
         }
 
         .table_row {
@@ -21,6 +20,7 @@
             height: 40px;
             line-height: 40px;
             background-color: rgb(247, 247, 247);
+            padding: 0 6px;
 
         }
 
@@ -73,7 +73,7 @@
 
 <body>
     <div id="app">
-        今天: {{ today.year }} 年 {{ today.month }} 月{{ today.day }} 日
+        &nbsp;今天: {{ today.year }} 年 {{ today.month }} 月{{ today.day }} 日
         <div class="container">
             <div id="circle">
                 <div>明天是{{ tom.status.weekNumStr }}</div>
