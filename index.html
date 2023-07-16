@@ -6,125 +6,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>值班表</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14"></script>
-    <style>
-        html,
-        body {
-            margin: 0;
-            color: #555555;
-            background-color: rgb(243, 243, 243);
-        }
-
-        .table_row {
-            display: flex;
-            justify-content: space-between;
-            height: 40px;
-            line-height: 40px;
-            background-color: rgb(247, 247, 247);
-            padding: 0 6px;
-
-        }
-
-
-        .active {
-            background-color: #8EC5FC;
-            background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
-            color: white;
-            /* border: solid 1px rgb(106, 78, 230); */
-        }
-
-        .xiuxi {
-            background-color: #FBAB7E;
-            background-image: linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%);
-            color: white;
-        }
-
-        .ban {
-            width: 80px;
-        }
-
-        .date {
-            width: 100px;
-        }
-
-        #circle {
-            background-color: #4158D0;
-            background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
-            color: white;
-            height: 200px;
-            width: 200px;
-            border-radius: 100px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-            -webkit-box-shadow: 0px 32px 114px -86px rgba(82, 82, 82, 1);
-            -moz-box-shadow: 0px 32px 114px -86px rgba(82, 82, 82, 1);
-            box-shadow: 0px 32px 114px -86px rgba(82, 82, 82, 1);
-        }
-
-        .container {
-            display: flex;
-            justify-content: center;
-            margin: 40px 0;
-        }
-
-        .btn_container {
-            margin-top: 10px;
-            display: flex;
-            justify-content: center;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div id="app">
-        &nbsp;今天: {{ today.year }} 年 {{ today.month }} 月{{ today.day }} 日
-        <div class="container">
-            <div id="circle">
-                <div>明天是{{ tom.status.weekNumStr }}</div>
-                <div>
-                    <span v-if="tom.status.ban === 'shangwu_wanshang'">值早晚班</span>
-                    <span v-if="tom.status.ban === 'zhengchang' && !tom.status.xiuxi">正常上班</span>
-                    <span v-if="tom.status.ban === 'xiawu'">值下午班</span>
-                    <span v-show="tom.status.xiuxi">休息</span>
+    <div id="fc">
+        <div id="app">
+            &nbsp;今天: {{ today.year }} 年 {{ today.month }} 月{{ today.day }} 日
+            <div class="container">
+                <div id="circle">
+                    <div>明天是{{ tom.status.weekNumStr }}</div>
+                    <div>
+                        <span v-if="tom.status.ban === 'shangwu_wanshang'">值早晚班</span>
+                        <span v-if="tom.status.ban === 'zhengchang' && !tom.status.xiuxi">正常上班</span>
+                        <span v-if="tom.status.ban === 'xiawu'">值下午班</span>
+                        <span v-show="tom.status.xiuxi">休息</span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div>
-            <div class="table_row">
-                <div class="date">日期</div>
-                <div class="date">周几</div>
-                <div class="ban">
-                    值班
+            <div>
+                <div class="table_row">
+                    <div class="date">日期</div>
+                    <div class="date">周几</div>
+                    <div class="ban">
+                        值班
+                    </div>
+                    <div class="ban">
+                        休息
+                    </div>
                 </div>
-                <div class="ban">
-                    休息
+                <div class="table_row" :class="{active: today.fullStr === day.dateStr, xiuxi: day.xiuxi}"
+                    v-for="(day,index) in table" :key="index">
+                    <div class="date">
+                        <span v-if="today.fullStr === day.dateStr">&nbsp;&nbsp;今天</span>
+                        <span v-else> {{ day.dateStr }} </span>
+                    </div>
+                    <div class="date"> {{ day.weekNumStr }}</div>
+                    <div class="ban">
+                        <div v-if="day.ban === 'shangwu_wanshang'">早晚</div>
+                        <div v-if="day.ban === 'zhengchang'">正常</div>
+                        <div v-if="day.ban === 'xiawu'">下午</div>
+    
+                    </div>
+                    <div class="ban">
+                        <div v-show="day.xiuxi">休息</div>
+                    </div>
+    
                 </div>
             </div>
-            <div class="table_row" :class="{active: today.fullStr === day.dateStr, xiuxi: day.xiuxi}"
-                v-for="(day,index) in table" :key="index">
-                <div class="date">
-                    <span v-if="today.fullStr === day.dateStr">&nbsp;&nbsp;今天</span>
-                    <span v-else> {{ day.dateStr }} </span>
-                </div>
-                <div class="date"> {{ day.weekNumStr }}</div>
-                <div class="ban">
-                    <div v-if="day.ban === 'shangwu_wanshang'">早晚</div>
-                    <div v-if="day.ban === 'zhengchang'">正常</div>
-                    <div v-if="day.ban === 'xiawu'">下午</div>
-
-                </div>
-                <div class="ban">
-                    <div v-show="day.xiuxi">休息</div>
-                </div>
-
+            <div class="btn_container">
+                <div class="btn" @click="continueLoad">点此处继续加载</div>
             </div>
-        </div>
-        <div class="btn_container">
-            <div class="btn" @click="continueLoad">点此处继续加载</div>
         </div>
     </div>
+    
     <script src="./main.js"></script>
 </body>
 
