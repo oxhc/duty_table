@@ -16,6 +16,8 @@ var vm = new Vue({
     table: []
   },
   created() {
+    // this.today.date.setDate(this.today.date.getDate() + 7)
+
     // 获取年份
     this.today.year = this.today.date.getFullYear();
     // 获取月份（注意，月份从0开始计数，所以需要加1）
@@ -54,37 +56,55 @@ var vm = new Vue({
         var day = ("0" + date.getDate()).slice(-2);
         return year + "-" + month + "-" + day;
     },
+    getWeekNumStr(date) {
+        // 获取星期几
+        let dayOfWeek = date.getDay();
+        // 将数字转换为相应的星期几字符串
+        let weekdays = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+        let dayOfWeekString = weekdays[dayOfWeek];
+        // 打印结果
+        return dayOfWeekString
+    },
     generateDateList(date) {
         // 获取今天日期对象
-        var today = date;
+        let today = date;
 
         // 创建一个空数组来存储日期字符串列表
-        var dateStrings = [];
+        let dateStrings = [];
+        let mondayFlag = false;
 
         // 循环生成今天前后14天的日期字符串列表
-        for (var i = -2; i <= 30; i++) {
-            var date = new Date(today);
+        for (let i = -6; i <= 30; i++) {
+            let date = new Date(today);
             date.setDate(today.getDate() + i);
-            var dateString = this.getDateString(date);
+            let weekNumStr = this.getWeekNumStr(date)
+            if(weekNumStr !== "星期一" && !mondayFlag) {
+                continue
+            } else {
+                mondayFlag = true
+            }
+            let dateString = this.getDateString(date);
             dateStrings.push(dateString);
         }
 
         return dateStrings
-    },
-    getWeekNumStr(date) {
-        // 获取星期几
-        var dayOfWeek = date.getDay();
-        // 将数字转换为相应的星期几字符串
-        var weekdays = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
-        var dayOfWeekString = weekdays[dayOfWeek];
-        // 打印结果
-        return dayOfWeekString
     },
     getBan(date) {
         var ban_status = ["xiawu","shangwu_wanshang", "zhengchang"]
         var days = (this.daysBetweenDates(date, this.model_date) - 1) % 3
         console.log(this.daysBetweenDates(date, this.model_date))
         return ban_status[days]
+    },
+    compareDates(dateStr1, dateStr2) {
+        var date1 = new Date(dateStr1);
+        var date2 = new Date(dateStr2);
+        if (date1 < date2) {
+          return 2
+        } else if (date1 > date2) {
+          return 1;
+        } else {
+          return 0
+        }
     },
     generateTable(dateList) {
         dateList.forEach(d => {
@@ -95,6 +115,11 @@ var vm = new Vue({
             })
         });
         this.table.forEach(d => {
+            var date = new Date(d.dateStr)
+            if(date < this.today.date) {
+                d['outdate'] = true
+            }
+
             if((d.weekNumStr === "星期二" || d.weekNumStr === "星期三" || d.weekNumStr === "星期四") && d.ban === "zhengchang") {
                 d['xiuxi'] = true
             } else {

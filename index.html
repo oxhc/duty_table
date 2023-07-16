@@ -35,7 +35,7 @@
                         休息
                     </div>
                 </div>
-                <div class="table_row" :class="{active: today.fullStr === day.dateStr, xiuxi: day.xiuxi}"
+                <div class="table_row" :class="{xiuxi: day.xiuxi, outdate: day.outdate, active: today.fullStr === day.dateStr}"
                     v-for="(day,index) in table" :key="index">
                     <div class="date">
                         <span v-if="today.fullStr === day.dateStr">&nbsp;&nbsp;今天</span>
