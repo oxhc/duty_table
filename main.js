@@ -116,7 +116,7 @@ var vm = new Vue({
         });
         this.table.forEach(d => {
             var date = new Date(d.dateStr)
-            if(date < this.today.date) {
+            if(date < new Date(this.today.fullStr)) {
                 d['outdate'] = true
             }
 
