@@ -126,7 +126,7 @@ var vm = new Vue({
                 d['xiuxi'] = false
             }
 
-            if((d.weekNumStr === "星期六" || d.weekNumStr === "星期日") && d.ban === "zhengchang") {
+            if(d.ban === "zhengchang") {
                 d.ban = "qingjia"
             }
         })
