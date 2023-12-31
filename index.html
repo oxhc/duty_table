@@ -19,6 +19,7 @@
                     <div>
                         <span v-if="tom.status.ban === 'shangwu_wanshang'">值早晚班</span>
                         <span v-if="tom.status.ban === 'zhengchang' && !tom.status.xiuxi">正常上班</span>
+                        <span v-if="tom.status.ban === 'qingjia'">正常上班</span>
                         <span v-if="tom.status.ban === 'xiawu'">值下午班</span>
                         <span v-show="tom.status.xiuxi">休息</span>
                     </div>
