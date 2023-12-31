@@ -35,7 +35,7 @@
                         休息
                     </div>
                 </div>
-                <div class="table_row" :class="{xiuxi: day.xiuxi, outdate: day.outdate, active: today.fullStr === day.dateStr}"
+                <div class="table_row" :class="{xiuxi: day.xiuxi, outdate: day.outdate, active: today.fullStr === day.dateStr, qingjia: day.ban === 'qingjia'}"
                     v-for="(day,index) in table" :key="index">
                     <div class="date">
                         <span v-if="today.fullStr === day.dateStr">&nbsp;&nbsp;今天</span>
@@ -46,10 +46,11 @@
                         <div v-if="day.ban === 'shangwu_wanshang'">早晚</div>
                         <div v-if="day.ban === 'zhengchang'">正常</div>
                         <div v-if="day.ban === 'xiawu'">下午</div>
-    
+                        <div v-if="day.ban === 'qingjia'">正常</div>
                     </div>
                     <div class="ban">
-                        <div v-show="day.xiuxi">休息</div>
+                        <div v-if="day.xiuxi">休息</div>
+                        <div v-else-if="day.ban === 'qingjia'">可请假</div>
                     </div>
     
                 </div>
