@@ -33,27 +33,26 @@ var vm = new Vue({
   },
   methods: {
     gettom() {
-        var date = new Date();
+        const date = new Date();
         date.setDate(this.today.date.getDate() + 1);
-        var tomFullStr = this.getDateString(date);
+        const tomFullStr = this.getDateString(date);
 
-        var tomstatus = this.table.find((element) => {
+        const tomstatus = this.table.find((element) => {
             return element.dateStr === tomFullStr;
-          });
+        });
 
         this.tom.fullStr = tomFullStr
         this.tom.status = tomstatus
     },
     daysBetweenDates(date1, date2) {
-        var diffInMilliseconds = Math.abs(date2 - date1);
+        const diffInMilliseconds = Math.abs(date2 - date1);
         // 计算相差的天数
-        var diffInDays = Math.ceil(diffInMilliseconds / (1000 * 60 * 60 * 24));
-        return diffInDays
+        return Math.ceil(diffInMilliseconds / (1000 * 60 * 60 * 24))
     },
     getDateString(date) {
-        var year = date.getFullYear();
-        var month = ("0" + (date.getMonth() + 1)).slice(-2);
-        var day = ("0" + date.getDate()).slice(-2);
+        const year = date.getFullYear();
+        const month = ("0" + (date.getMonth() + 1)).slice(-2);
+        const day = ("0" + date.getDate()).slice(-2);
         return year + "-" + month + "-" + day;
     },
     getWeekNumStr(date) {
@@ -61,9 +60,8 @@ var vm = new Vue({
         let dayOfWeek = date.getDay();
         // 将数字转换为相应的星期几字符串
         let weekdays = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
-        let dayOfWeekString = weekdays[dayOfWeek];
         // 打印结果
-        return dayOfWeekString
+        return weekdays[dayOfWeek]
     },
     generateDateList(date) {
         // 获取今天日期对象
@@ -90,21 +88,10 @@ var vm = new Vue({
         return dateStrings
     },
     getBan(date) {
-        var ban_status = ["xiawu","shangwu_wanshang", "zhengchang"]
-        var days = (this.daysBetweenDates(date, this.model_date) - 1) % 3
+        const ban_status = ["xiawu", "shangwu_wanshang", "zhengchang"];
+        const days = (this.daysBetweenDates(date, this.model_date) - 1) % 3;
         console.log(this.daysBetweenDates(date, this.model_date))
         return ban_status[days]
-    },
-    compareDates(dateStr1, dateStr2) {
-        var date1 = new Date(dateStr1);
-        var date2 = new Date(dateStr2);
-        if (date1 < date2) {
-          return 2
-        } else if (date1 > date2) {
-          return 1;
-        } else {
-          return 0
-        }
     },
     generateTable(dateList) {
         dateList.forEach(d => {
@@ -115,7 +102,7 @@ var vm = new Vue({
             })
         });
         this.table.forEach(d => {
-            var date = new Date(d.dateStr)
+            const date = new Date(d.dateStr);
             if(date < new Date(this.today.fullStr)) {
                 d['outdate'] = true
             }
@@ -129,14 +116,14 @@ var vm = new Vue({
         })
     },
     continueLoad() {
-        var lastday = this.table[this.table.length - 1];
+        const lastday = this.table[this.table.length - 1];
         // 获取今天日期对象
-        var today = new Date(lastday.dateStr);
-        var dateStrings = [];
+        const today = new Date(lastday.dateStr);
+        const dateStrings = [];
         for (var i = 1; i <= 30; i++) {
-            var date = new Date(today);
+            const date = new Date(today);
             date.setDate(today.getDate() + i);
-            var dateString = this.getDateString(date);
+            const dateString = this.getDateString(date);
             dateStrings.push(dateString);
         }
         this.generateTable(dateStrings)
