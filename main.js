@@ -29,7 +29,7 @@ var vm = new Vue({
     var li = this.generateDateList(this.today.date)
     this.generateTable(li)
     this.gettom()
-    
+
   },
   methods: {
     gettom() {
@@ -120,11 +120,8 @@ var vm = new Vue({
                 d['outdate'] = true
             }
 
-            if((d.weekNumStr === "星期二" || d.weekNumStr === "星期三" || d.weekNumStr === "星期四") && d.ban === "zhengchang") {
-                d['xiuxi'] = true
-            } else {
-                d['xiuxi'] = false
-            }
+            d['xiuxi'] = (d.weekNumStr === "星期二" || d.weekNumStr === "星期三" || d.weekNumStr === "星期四")
+                && (d.ban === "zhengchang" || d.ban === "qingjia");
 
             if(d.ban === "zhengchang") {
                 d.ban = "qingjia"
