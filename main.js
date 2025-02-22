@@ -12,7 +12,7 @@ var vm = new Vue({
     tom: {
         fullStr: ""
     },
-    model_date: new Date("2023-7-02"),
+    model_date: new Date("2023-7-03"),
     table: []
   },
   created() {
